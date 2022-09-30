@@ -18,7 +18,7 @@ class Profil {
       required this.languageFavorite,
       required this.secret});
 
-  String setFirstName() {
+  String setFullName() {
     return "$firstName $lastName";
   }
 
