@@ -9,25 +9,23 @@ class Profil {
   String secret;
 
   Profil(
-      {required this.firstName,
-      required this.lastName,
-      required this.age,
-      required this.taille,
-      required this.genre,
-      required this.hobbies,
-      required this.languageFavorite,
-      required this.secret});
+      {this.firstName = "",
+      this.lastName = "",
+      this.age = 0,
+      this.taille = 0.0,
+      this.genre = true,
+      this.hobbies = const [],
+      this.languageFavorite = "dart",
+      this.secret = ""});
 
-  String setFullName() {
-    return "$firstName $lastName";
-  }
+  String setFullName() => "$firstName $lastName";
 
   String setAge() {
+    String ageString = "$age an";
     if (age > 1) {
-      return "$age ans";
-    } else {
-      return "$age an";
+      ageString += "s";
     }
+    return ageString;
   }
 
   String setTaille() {
@@ -38,7 +36,18 @@ class Profil {
     }
   }
 
-  String setSexe() {
-    return genre ? "Masculin" : "Féminin";
+  String setSexe() => genre ? "Féminin" : "Masculin";
+
+  String setHobbies() {
+    String toHobbiesString = "";
+    if (hobbies.length == 0) {
+      return "Je n'ai pas de hobbies.";
+    } else {
+      toHobbiesString = "Mes hobbies sont :";
+      hobbies.forEach((hobbie) {
+        toHobbiesString += " $hobbie,";
+      });
+      return toHobbiesString;
+    }
   }
 }
