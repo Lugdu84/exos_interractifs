@@ -82,6 +82,14 @@ class HomeViewState extends State<HomeView> {
               ),
             ),
           ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(onPressed: null, icon: Icon(Icons.photo_album)),
+              IconButton(onPressed: null, icon: Icon(Icons.camera_alt_rounded)),
+            ],
+          ),
           myDivider(),
           const SubTitle(texte: "Modifier les infos"),
           myTextField(controller: firstName, hint: "Entrez votre prénom"),
