@@ -15,7 +15,7 @@ class Profil {
       this.taille = 0.0,
       this.genre = true,
       this.hobbies = const [],
-      this.languageFavorite = "dart",
+      this.languageFavorite = "Dart",
       this.secret = ""});
 
   String setFullName() => "$firstName $lastName";

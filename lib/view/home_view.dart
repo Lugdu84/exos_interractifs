@@ -137,10 +137,9 @@ class HomeViewState extends State<HomeView> {
             ],
           ),
           myDivider(),
-          const SubTitle(texte: "Mes hobbies"),
           myHobbyes(),
           myDivider(),
-          const SubTitle(texte: "Mon language préféré")
+          myRadios()
         ],
       )),
     );
@@ -177,7 +176,7 @@ class HomeViewState extends State<HomeView> {
   }
 
   Column myHobbyes() {
-    List<Widget> children = [];
+    List<Widget> children = [const SubTitle(texte: "Mes hobbies")];
     hobbies.forEach((hobby, checked) {
       Row myHobby = Row(
         mainAxisSize: MainAxisSize.max,
@@ -216,6 +215,39 @@ class HomeViewState extends State<HomeView> {
 
   Column myRadios() {
     List<Widget> widgets = [];
-    return Column();
+    List<String> langs = ["Dart", "Swift", "Kotlin", "Java", "Python"];
+    int index =
+        langs.indexWhere((lang) => lang.startsWith(profil.languageFavorite));
+    for (var x = 0; x < langs.length; x++) {
+      Column language = Column(
+        children: [
+          Text(langs[x]),
+          Radio(
+              value: x,
+              groupValue: index,
+              onChanged: ((newValue) {
+                setState(() {
+                  profil.languageFavorite = langs[newValue as int];
+                });
+              }))
+        ],
+      );
+      widgets.add(language);
+    }
+    Row languages = Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: widgets,
+    );
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        const SubTitle(texte: "Language préféré"),
+        const Padding(padding: EdgeInsets.only(bottom: 10)),
+        languages
+      ],
+    );
   }
 }
