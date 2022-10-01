@@ -55,7 +55,6 @@ class HomeViewState extends State<HomeView> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          // Header(profil: profil),
           Card(
             color: Colors.purple.withOpacity(0.5),
             child: Column(
