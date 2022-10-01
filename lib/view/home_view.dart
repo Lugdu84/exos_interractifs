@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:exos_interractifs/view/sub_title.dart';
 import 'package:flutter/material.dart';
 import '../model/profil.dart';
+import "package:image_picker/image_picker.dart";
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class HomeView extends StatefulWidget {
 
 class HomeViewState extends State<HomeView> {
   Profil profil = Profil(firstName: "David", lastName: "Grammatico");
+  File? file;
 
   bool showSecret = false;
   Map<String, bool> hobbies = {
@@ -56,38 +59,56 @@ class HomeViewState extends State<HomeView> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
-            width: width,
-            child: Card(
-              color: Colors.purple.withOpacity(0.5),
-              child: Column(
-                children: [
-                  Text(profil.setFullName()),
-                  Text("Age : ${profil.setAge()}"),
-                  Text("Taille : ${profil.setTaille()}"),
-                  Text("Genre : ${profil.setSexe()}"),
-                  Text(profil.setHobbies()),
-                  Text(
-                      "Language de programmation préféré : ${profil.languageFavorite}"),
-                  ElevatedButton(
-                      onPressed: showTheSecret,
-                      child: Text(
-                          showSecret ? "Cacher le secret" : "Montrer secret")),
-                  (showSecret)
-                      ? Text(profil.secret.isNotEmpty
-                          ? "Mon secret est : ${profil.secret}"
-                          : "Je n'ai pas de secret")
-                      : Container(),
-                ],
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              SizedBox(
+                width: width,
+                height: 240,
+                child: Card(
+                  color: Colors.purple.withOpacity(0.5),
+                  child: Column(
+                    children: [
+                      Text(profil.setFullName()),
+                      Text("Age : ${profil.setAge()}"),
+                      Text("Taille : ${profil.setTaille()}"),
+                      Text("Genre : ${profil.setSexe()}"),
+                      Text(profil.setHobbies()),
+                      Text(
+                          "Language de programmation préféré : ${profil.languageFavorite}"),
+                      ElevatedButton(
+                          onPressed: showTheSecret,
+                          child: Text(showSecret
+                              ? "Cacher le secret"
+                              : "Montrer secret")),
+                      (showSecret)
+                          ? Text(profil.secret.isNotEmpty
+                              ? "Mon secret est : ${profil.secret}"
+                              : "Je n'ai pas de secret")
+                          : Container(),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              Padding(
+                  padding: EdgeInsets.only(top: 180),
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.white,
+                    backgroundImage: file != null ? FileImage(file!) : null,
+                  )),
+            ],
           ),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(onPressed: null, icon: Icon(Icons.photo_album)),
-              IconButton(onPressed: null, icon: Icon(Icons.camera_alt_rounded)),
+              IconButton(
+                  onPressed: () => getImage(ImageSource.gallery),
+                  icon: Icon(Icons.photo_album)),
+              IconButton(
+                  onPressed: () => getImage(ImageSource.camera),
+                  icon: Icon(Icons.camera_alt_rounded)),
             ],
           ),
           myDivider(),
@@ -257,5 +278,17 @@ class HomeViewState extends State<HomeView> {
         languages
       ],
     );
+  }
+
+  Future getImage(ImageSource source) async {
+    ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: source);
+    setState(() {
+      if (image != null) {
+        file = File(image.path);
+      } else {
+        print("Nous n'avons pas pu récupérer d'image");
+      }
+    });
   }
 }
