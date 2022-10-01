@@ -46,6 +46,7 @@ class HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mon profil"),
@@ -53,35 +54,35 @@ class HomeViewState extends State<HomeView> {
       body: SingleChildScrollView(
           child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Card(
-            color: Colors.purple.withOpacity(0.5),
-            child: Column(
-              children: [
-                Text(profil.setFullName()),
-                Text("Age : ${profil.setAge()}"),
-                Text("Taille : ${profil.setTaille()}"),
-                Text("Genre : ${profil.setSexe()}"),
-                Text(profil.setHobbies()),
-                Text(
-                    "Language de programmation préféré : ${profil.languageFavorite}"),
-                ElevatedButton(
-                    onPressed: showTheSecret,
-                    child: Text(
-                        showSecret ? "Cacher le secret" : "Montrer secret")),
-                (showSecret)
-                    ? Text(profil.secret.isNotEmpty
-                        ? "Mon secret est : ${profil.secret}"
-                        : "Je n'ai pas de secret")
-                    : Container(),
-              ],
+          SizedBox(
+            width: width,
+            child: Card(
+              color: Colors.purple.withOpacity(0.5),
+              child: Column(
+                children: [
+                  Text(profil.setFullName()),
+                  Text("Age : ${profil.setAge()}"),
+                  Text("Taille : ${profil.setTaille()}"),
+                  Text("Genre : ${profil.setSexe()}"),
+                  Text(profil.setHobbies()),
+                  Text(
+                      "Language de programmation préféré : ${profil.languageFavorite}"),
+                  ElevatedButton(
+                      onPressed: showTheSecret,
+                      child: Text(
+                          showSecret ? "Cacher le secret" : "Montrer secret")),
+                  (showSecret)
+                      ? Text(profil.secret.isNotEmpty
+                          ? "Mon secret est : ${profil.secret}"
+                          : "Je n'ai pas de secret")
+                      : Container(),
+                ],
+              ),
             ),
           ),
-          const Divider(
-            thickness: 2,
-            color: Colors.purple,
-          ),
+          myDivider(),
           const SubTitle(texte: "Modifier les infos"),
           myTextField(controller: firstName, hint: "Entrez votre prénom"),
           myTextField(controller: lastName, hint: "Entrez votre nom"),
@@ -135,11 +136,11 @@ class HomeViewState extends State<HomeView> {
                   }))
             ],
           ),
-          const Divider(
-            thickness: 2,
-            color: Colors.purple,
-          ),
+          myDivider(),
           const SubTitle(texte: "Mes hobbies"),
+          myHobbyes(),
+          myDivider(),
+          const SubTitle(texte: "Mon language préféré")
         ],
       )),
     );
@@ -169,15 +170,52 @@ class HomeViewState extends State<HomeView> {
 
   updateUser() {
     setState(() {
-      profil = Profil(
-        firstName: (firstName.text != profil.firstName)
-            ? firstName.text
-            : profil.firstName,
-        lastName: (lastName.text != profil.lastName)
-            ? lastName.text
-            : profil.lastName,
-        secret: (secret.text != profil.secret) ? secret.text : profil.secret,
-      );
+      profil.firstName = firstName.text;
+      profil.lastName = lastName.text;
+      profil.secret = secret.text;
     });
+  }
+
+  Column myHobbyes() {
+    List<Widget> children = [];
+    hobbies.forEach((hobby, checked) {
+      Row myHobby = Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(hobby),
+          Checkbox(
+              value: checked,
+              onChanged: (newBool) {
+                setState(() {
+                  hobbies[hobby] = newBool ?? false;
+                  List<String> str = [];
+                  hobbies.forEach((key, value) {
+                    if (value == true) {
+                      str.add(key);
+                    }
+                  });
+                  profil.hobbies = str;
+                });
+              })
+        ],
+      );
+      children.add(myHobby);
+    });
+    return Column(
+      children: children,
+    );
+  }
+
+  Divider myDivider() {
+    return const Divider(
+      thickness: 2,
+      color: Colors.purple,
+    );
+  }
+
+  Column myRadios() {
+    List<Widget> widgets = [];
+    return Column();
   }
 }
