@@ -91,7 +91,7 @@ class HomeViewState extends State<HomeView> {
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.only(top: 180),
+                  padding: const EdgeInsets.only(top: 180),
                   child: CircleAvatar(
                     radius: 60,
                     backgroundColor: Colors.white,
@@ -104,11 +104,11 @@ class HomeViewState extends State<HomeView> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                  onPressed: () => getImage(ImageSource.gallery),
-                  icon: Icon(Icons.photo_album)),
+                  onPressed: () => getImage(source: ImageSource.gallery),
+                  icon: const Icon(Icons.photo_album)),
               IconButton(
-                  onPressed: () => getImage(ImageSource.camera),
-                  icon: Icon(Icons.camera_alt_rounded)),
+                  onPressed: () => getImage(source: ImageSource.camera),
+                  icon: const Icon(Icons.camera_alt_rounded)),
             ],
           ),
           myDivider(),
@@ -126,9 +126,9 @@ class HomeViewState extends State<HomeView> {
               Text("Genre : ${profil.setSexe()}"),
               Switch(
                   value: profil.genre,
-                  onChanged: ((bool) {
+                  onChanged: ((newBool) {
                     setState(() {
-                      profil.genre = bool;
+                      profil.genre = newBool;
                     });
                   }))
             ],
@@ -280,7 +280,7 @@ class HomeViewState extends State<HomeView> {
     );
   }
 
-  Future getImage(ImageSource source) async {
+  Future getImage({required ImageSource source}) async {
     ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: source);
     setState(() {

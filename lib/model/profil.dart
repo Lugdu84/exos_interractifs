@@ -40,14 +40,16 @@ class Profil {
 
   String setHobbies() {
     String toHobbiesString = "";
-    if (hobbies.length == 0) {
+    if (hobbies.isEmpty) {
       return "Je n'ai pas de hobbies.";
     } else {
       toHobbiesString = "Mes hobbies sont :";
-      hobbies.forEach((hobbie) {
+      for (var hobbie in hobbies) {
         toHobbiesString += " $hobbie,";
-      });
-      return toHobbiesString;
+      }
+
+      return toHobbiesString.replaceRange(
+          toHobbiesString.length - 1, null, ".");
     }
   }
 }
